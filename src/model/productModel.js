@@ -14,11 +14,11 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  sellingPrice: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
+  // sellingPrice: {
+  //   type: Number,
+  //   required: true,
+  //   default: 0,
+  // },
   minimumStock: {
     type: Number,
     default: 5,
