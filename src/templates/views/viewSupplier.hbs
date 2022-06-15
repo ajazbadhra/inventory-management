@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Supplier</title>
+    {{>styleLinks}}
+</head>
+
+<body>
+    {{>sidebar}}
+    <main class="main-wrapper">
+        {{>navbar}}
+        <div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            <h5 class="card-header">Supplier List</h5>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered first" id="example">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>E-Mail</th>
+                                <th>Contact No</th>
+                                <th>GST No</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Landmark</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {{#each supplier}}
+                            <tr>
+                                <td>{{name}}</td>
+                                <td>{{email}}</td>
+                                <td>{{phone}}</td>
+                                <td>{{gstno}}</td>
+                                <td>{{city}}</td>
+                                <td>{{state}}</td>
+                                <td>{{landmark}}</td>
+                                <td>
+                                    <a href="/dashboard/updatesupplier/{{i.id}}">Update</a>
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </main>
+    {{>jsLinks}}
+</body>
+
+</html>

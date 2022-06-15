@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income</title>
+    {{>styleLinks}}
+</head>
+
+<body>
+    {{>sidebar}}
+    <main class="main-wrapper">
+        {{>navbar}}
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card">
+                    {{#if msg}}
+      <div class="alert alert-success d-flex align-items-center" role="alert">
+        <div>
+          {{msg}}
+        </div>
+      </div>
+    {{/if}}
+                    <div class="card-header">
+                        <h3 class="align-middle">Add Income</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="/income">
+                            <div class="form-row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                                    <label for="validationCustom05">Date</label>
+                                    <input type="text" class="form-control" id="validationCustom05" name="date"
+                                        placeholder="Date" value="{{date}}" required readonly>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                                    <label for="validationCustom05">Name</label>
+                                    <input type="text" class="form-control" id="validationCustom05" name="name"
+                                        placeholder="Name">
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                                    <label for="validationCustom04">Amount</label>
+                                    <input type="number" class="form-control" id="validationCustom04" name="amount"
+                                        placeholder="Amount" required>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                                    <label for="validationCustom05">Description</label>
+                                    <textarea rows="3" class="form-control" placeholder="Description"
+                                        name="desc"></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <p class="text-right pl-2 pt-3">
+                                        <input type="submit" class="btn btn-space btn-success rounded" name="GST"
+                                            value="Submit">
+                                        <a href="/dashboard" class="btn btn-space btn-danger rounded">Cancel</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card">
+                    <h5 class="card-header">Today's Income</h5>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered first" id="example">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Name</th>
+                                        <th>Amount</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each income}}
+                                    <tr>
+                                        <td>{{date}}</td>
+                                        <td>{{time}}</td>
+                                        <td>{{name}}</td>
+                                        <td>{{amount}}</td>
+                                        <td>{{desc}}</td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    {{>jsLinks}}
+    {{>animation}}
+</body>
+
+</html>

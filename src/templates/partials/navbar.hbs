@@ -1,0 +1,57 @@
+<header class="header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-5 col-md-5 col-6">
+        <div class="header-left d-flex align-items-center">
+          <div class="menu-toggle-btn mr-20">
+            <button id="menu-toggle" class="main-btn primary-btn btn-hover">
+              <i class="fa-solid fa-bars"></i>
+              Menu
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7 col-md-7 col-6">
+        <div class="header-right">
+          <div class="profile-box ml-15">
+            <button
+              class="dropdown-toggle bg-transparent border-0"
+              type="button"
+              id="profile"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <div class="profile-info">
+                <div class="info">
+                  <h6>{{userName}}</h6>
+                  <div class="image">
+                    <i class="fa-solid fa-user fa-xl"></i>
+                    <span class="status"></span>
+                  </div>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-down"></i>
+            </button>
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="profile"
+            >
+              {{! <li>
+                <a href="#0">
+                  <i class="fa-regular fa-file-user"></i>
+                  View Profile
+                </a>
+              </li> }}
+              <li>
+                <a href="/logout">
+                  <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                  Sign Out
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

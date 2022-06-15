@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Product</title>
+    {{>styleLinks}}
+</head>
+
+<body>
+    {{>sidebar}}
+    <main class="main-wrapper">
+        {{>navbar}}
+        <div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            <h5 class="card-header">Product List</h5>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered first" id="example">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Product Category</th>
+                                <th>Unit</th>
+                                <th>Store Location</th>
+                                <th>Minimum Stock</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {{#each product}}
+                            <tr>
+                                <td>{{productName}}</td>
+                                <td>{{category}}</td>
+                                <td>{{unit}}</td>
+                                <td>{{storeLocation}}</td>
+                                <td>{{minimumStock}}</td>
+                                <td>
+                                    <a href="/dashboard/updateproduct/{{i.id}}">Update</a>
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </main>
+    {{>jsLinks}}
+</body>
+
+</html>

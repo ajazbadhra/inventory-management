@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Payment</title>
+    {{>styleLinks}}
+</head>
+
+<body>
+    {{>sidebar}}
+    <main class="main-wrapper">
+        {{>navbar}}
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="card">
+        {{#if msg}}
+      <div class="alert alert-success d-flex align-items-center" role="alert">
+        <div>
+          {{msg}}
+        </div>
+      </div>
+    {{/if}}
+        <h5 class="card-header">Add Customer Payment</h5>
+        <div class="card-body">
+            <form method="post" action="/customer/customerPayment">
+                <div class="form-row">
+
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                        <label for="validationCustom05">Date</label>
+                        <input type="text" class="form-control" id="validationCustom05" name="date" placeholder="Date"
+                            value="{{date}}" required readonly>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                        <label for="validationCustom05">Customer Name</label>
+                        <select name="customerName" id="editable-select" class="form-control customername">
+                            <option value="-1" selected>------Select-------</option>
+                            {{#each customer}}
+                            <option value="{{name}}">{{name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="form-row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                        <label for="validationCustom05">Total Pending Amount</label>
+                        <input type="text" class="form-control pending-amount" id="pending-amount" name="pandingAmt"
+                            placeholder="Pending Amount" required readonly>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                        <label for="validationCustom05">Paid Amount</label>
+                        <input type="text" class="form-control" placeholder="paid Amount" name="paidAmt" required>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                        <label for="validationCustom05">Round Off</label>
+                        <input type="text" class="form-control" step="any" placeholder="Round Off" name="round_off">
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                        <label for="validationCustom05">Description</label>
+                        <textarea rows="3" class="form-control" placeholder="Description" name="desc"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <p class="text-right pl-2 pt-3">
+                        <input type="submit" class="btn btn-space btn-success rounded" name="GST" value="Submit">
+                        <a href="/dashboard" class="btn btn-space btn-danger rounded">Cancel</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+    </main>
+    {{>jsLinks}}
+    {{>animation}}
+    <script src="/Select2/js/select2.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        $('.customername').select2();
+        $('.customername').on("change", function () {
+            var name = $(this).val();
+            $.ajax({
+                method: "post",
+                url: "/customer/dueAmount",
+                data: { 'name': name },
+                success: function (data) {
+                    console.log(data.dueAmount);
+                    $('.pending-amount').val(data.dueAmount)
+                }
+            });
+        });
+    });
+</script>
+</body>
+
+</html>
