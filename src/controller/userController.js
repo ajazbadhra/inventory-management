@@ -87,21 +87,25 @@ const login = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    const isValid = await bcrypt.compare(password, user.password);
-    if (isValid) {
-      const token = jwt.sign(
-        {
-          email,
-          password,
-        },
-        process.env.SECRET_KEY
-      );
-      await res.cookie("token", token);
-      req.flash("success", "Login successfully.... ");
+    if (user) {
+      const isValid = await bcrypt.compare(password, user.password);
+      if (isValid) {
+        const token = jwt.sign(
+          {
+            email,
+            password,
+          },
+          process.env.SECRET_KEY
+        );
+        await res.cookie("token", token);
+        req.flash("success", "Login successfully.... ");
 
-      res.redirect("/dashboard");
+        res.redirect("/dashboard");
+      } else {
+        res.send("login failed");
+      }
     } else {
-      res.send("login failed");
+      res.send("No user Available");
     }
   } catch (err) {
     console.log(err);
