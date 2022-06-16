@@ -27,7 +27,7 @@
                             <th>Supplier Name</th>
                             <th>Grand Amount</th>
                             <th>View Purchase</th>
-                            <th>Edit Purchase</th>
+                            {{!-- <th>Edit Purchase</th> --}}
                         </tr>
                         </thead>
                         <tbody>
@@ -40,9 +40,9 @@
                             <td>
                             <a href="/purchase/purchaseInvoice/{{billNo}}">view</a>
                             </td>
-                            <td>
+                            {{!-- <td>
                                 <a href="/dashboard/updatepurchase/{{billNo}}">Edit</a>
-                            </td>
+                            </td> --}}
                         </tr>
                         {{/each}}
                         </tbody>

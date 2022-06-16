@@ -26,6 +26,7 @@ const todayDate = () => {
 const showLogin = async (req, res) => {
   try {
     const user = await User.find({});
+    // console.log(user.length);
     res.render("login", { user, msg: req.flash("success") });
   } catch (err) {
     console.log(err);
@@ -73,7 +74,8 @@ const register = async (req, res) => {
     await user.save();
     req.flash("success", "Registered successfully.... ");
 
-    res.render("login", { msg: req.flash("success") });
+    // res.render("login", { msg: req.flash("success") });
+    res.redirect("/");
   } catch (err) {
     console.log(err);
     res.send(err.message);
@@ -234,7 +236,7 @@ const showIncome = async (req, res) => {
     const { date } = todayDate();
     const user = await User.find({});
     const income = await Income.find({ date });
-    
+
     res.render("income", {
       date,
       income,

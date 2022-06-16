@@ -27,7 +27,7 @@
                                         <th>Customer Name</th>
                                         <th>Grand Total</th>
                                         <th>View Sale</th>
-                                        <th>Edit Sale</th>
+                                        {{!-- <th>Edit Sale</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -40,9 +40,9 @@
                                         <td>
                                             <a href="/sale/invoice?bill={{billNo}}">view</a>
                                         </td>
-                                        <td>
+                                        {{!-- <td>
                                             <a href="/dashboard/updatesale?bill={{billNo}}">Edit</a>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                     {{/each}}
                                 </tbody>
