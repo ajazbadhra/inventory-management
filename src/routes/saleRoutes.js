@@ -3,7 +3,7 @@ const router = new express.Router();
 const {
   showAddSale,
   viewSale,
-  getState,
+  getOldAmt,
   addSale,
   getCount,
   invoice,
@@ -11,7 +11,7 @@ const {
 
 router.route("/addSale").get(showAddSale).post(addSale);
 router.route("/viewSale").get(viewSale);
-router.route("/getState").post(getState);
+router.route("/getOldAmt").post(getOldAmt);
 router.post("/count", getCount);
 router.get("/invoice", invoice);
 

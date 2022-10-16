@@ -7,7 +7,7 @@ const saleSchema = new mongoose.Schema({
     unique: true,
   },
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   customerName: {
@@ -16,10 +16,6 @@ const saleSchema = new mongoose.Schema({
   },
   saleProducts: [
     {
-      hsn: {
-        type: String,
-        required: true,
-      },
       productName: {
         type: String,
         required: true,
@@ -38,12 +34,12 @@ const saleSchema = new mongoose.Schema({
         default: 0,
         required: true,
       },
-      gstp: {
+      dis: {
         type: Number,
         default: 0,
         required: true,
       },
-      gstAmt: {
+      netRate: {
         type: Number,
         default: 0,
         required: true,
@@ -58,17 +54,9 @@ const saleSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  cgst: {
+  oldAmt: {
     type: Number,
-    default: 0,
-  },
-  sgst: {
-    type: Number,
-    default: 0,
-  },
-  igst: {
-    type: Number,
-    default: 0,
+    required: true,
   },
   roff: {
     type: Number,

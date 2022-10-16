@@ -1,8 +1,9 @@
 $(document).ready(function () {
   var product_data = [];
   var stock_data = [];
-  var customer_state;
-  var profile_state;
+  var oldAmt;
+  // var customer_state;
+  // var profile_state;
   var customer_product_data = [];
   $.ajax({
     method: "get",
@@ -19,11 +20,12 @@ $(document).ready(function () {
     $.ajax({
       method: "post",
       dataType: "json",
-      url: "/sale/getState",
+      url: "/sale/getOldAmt",
       data: { cname: name },
       success: (data) => {
-        customer_state = data.customer_state.state;
-        profile_state = data.profile_state[0].state;
+        oldAmt = data.oldAmt.dueAmount;
+        // profile_state = data.profile_state[0].state;
+        $("#oldAmt").val(oldAmt);
       },
     });
 
@@ -38,16 +40,78 @@ $(document).ready(function () {
     });
   });
 
+  // const calculate = (id) => {
+  //   var rate = $("#rate" + id).val();
+  //   var qty = $("#qty" + id).val();
+  //   var gstp = $("#gstp" + id).val();
+
+  //   var tot = (parseFloat(rate) * parseFloat(qty)).toFixed(3);
+  //   var gstamt = (tot * gstp) / 100;
+  //   $("#gstamt" + id).val(gstamt);
+  //   $("#tot" + id).val(tot);
+
+  //   var sum = 0;
+  //   $("tr")
+  //     .find(".tot")
+  //     .each(function () {
+  //       if (!isNaN(this.value) && this.value.length != 0) {
+  //         sum += parseFloat(this.value);
+  //       }
+  //     });
+  //   $("#total").val(sum);
+
+  //   if (customer_state == profile_state) {
+  //     var gstsum = 0;
+  //     $("tr")
+  //       .find(".gstamt")
+  //       .each(function () {
+  //         if (!isNaN(this.value) && this.value.length != 0) {
+  //           gstsum = (parseFloat(this.value) + parseFloat(gstsum)).toFixed(3);
+  //         }
+  //       });
+  //     var cgst = gstsum / 2;
+  //     $("#cgst").val(cgst);
+  //     $("#sgst").val(cgst);
+  //   } else {
+  //     var gstsum = 0;
+  //     $("tr")
+  //       .find(".gstamt")
+  //       .each(function () {
+  //         if (!isNaN(this.value) && this.value.length != 0) {
+  //           gstsum = (parseFloat(this.value) + parseFloat(gstsum)).toFixed(3);
+  //         }
+  //       });
+  //     $("#igst").val(gstsum);
+  //   }
+
+  //   $("#roff").keyup(function () {
+  //     var gsts = 0;
+  //     $("tr")
+  //       .find(".gstamt")
+  //       .each(function () {
+  //         if (!isNaN(this.value) && this.value.length != 0) {
+  //           gsts += parseFloat(this.value);
+  //         }
+  //       });
+  //     var roff = $("#roff").val();
+  //     var total = $("#total").val();
+  //     var gt = parseFloat(total) + gsts;
+  //     var gtot = gt - parseFloat(roff);
+  //     $("#gtot").val(gtot);
+  //   });
+  //   var total = $("#total").val();
+  //   var gt = parseFloat(total) + parseFloat(gstsum);
+  //   $("#gtot").val(gt);
+  // };
+
   const calculate = (id) => {
     var rate = $("#rate" + id).val();
+    var dis = $("#dis" + id).val();
     var qty = $("#qty" + id).val();
-    var gstp = $("#gstp" + id).val();
-
-    var tot = (parseFloat(rate) * parseFloat(qty)).toFixed(3);
-    var gstamt = (tot * gstp) / 100;
-    $("#gstamt" + id).val(gstamt);
+    var nr = rate - (rate * dis) / 100;
+    $("#nr" + id).val(nr);
+    var tot = (nr * qty).toFixed(2);
     $("#tot" + id).val(tot);
-
     var sum = 0;
     $("tr")
       .find(".tot")
@@ -58,47 +122,20 @@ $(document).ready(function () {
       });
     $("#total").val(sum);
 
-    if (customer_state == profile_state) {
-      var gstsum = 0;
-      $("tr")
-        .find(".gstamt")
-        .each(function () {
-          if (!isNaN(this.value) && this.value.length != 0) {
-            gstsum = (parseFloat(this.value) + parseFloat(gstsum)).toFixed(3);
-          }
-        });
-      var cgst = gstsum / 2;
-      $("#cgst").val(cgst);
-      $("#sgst").val(cgst);
-    } else {
-      var gstsum = 0;
-      $("tr")
-        .find(".gstamt")
-        .each(function () {
-          if (!isNaN(this.value) && this.value.length != 0) {
-            gstsum = (parseFloat(this.value) + parseFloat(gstsum)).toFixed(3);
-          }
-        });
-      $("#igst").val(gstsum);
+    if (
+      $("#roff").keyup(function () {
+        var roff = $("#roff").val();
+        var total = $("#total").val();
+        var oldamt = $("#oldAmt").val();
+        var gt = parseFloat(total) + parseFloat(oldamt);
+        var gtot = gt - parseFloat(roff);
+        $("#gtot").val(gtot);
+      })
+    ) {
     }
-
-    $("#roff").keyup(function () {
-      var gsts = 0;
-      $("tr")
-        .find(".gstamt")
-        .each(function () {
-          if (!isNaN(this.value) && this.value.length != 0) {
-            gsts += parseFloat(this.value);
-          }
-        });
-      var roff = $("#roff").val();
-      var total = $("#total").val();
-      var gt = parseFloat(total) + gsts;
-      var gtot = gt - parseFloat(roff);
-      $("#gtot").val(gtot);
-    });
     var total = $("#total").val();
-    var gt = parseFloat(total) + parseFloat(gstsum);
+    var oldamt = $("#oldAmt").val();
+    var gt = parseFloat(total) + parseFloat(oldamt);
     $("#gtot").val(gt);
   };
 
@@ -122,15 +159,11 @@ $(document).ready(function () {
         newRow.html(
           '<td><a id="del' +
             counter +
-            '" href="#"> <i class="fa fa-trash" style="color: red;"aria-hidden="true"></i> </a></td><td><input type="number" min="0" class="form-control" id="hsn' +
-            counter +
-            '" name="hsn' +
-            counter +
-            '"></td><td><select name="prod' +
+            '" href="#"> <i class="fa fa-trash" style="color: red;"aria-hidden="true"></i> </a></td><td><select name="prod' +
             counter +
             '" id="prod' +
             counter +
-            '" placeholder="Select Product" class="product-select form-control" ><option selected>--------Select Product--------</option></select></td><td><input type="text" class="tot form-control" id="unit' +
+            '" placeholder="Select Product" class="product-select form-control" ><option selected>-----------------Select Product-----------------</option></select></td><td><input type="text" class="tot form-control" id="unit' +
             counter +
             '" name="unit' +
             counter +
@@ -138,19 +171,19 @@ $(document).ready(function () {
             counter +
             '" name="rate' +
             counter +
-            '"></td><td><input type="number" min="0" class="form-control" id="qty' +
+            '"></td><td><input type="number" min="0" class="addbtntext' +
+            counter +
+            ' form-control" id="qty' +
             counter +
             '" name="qty' +
             counter +
-            '"></td><td><input type="number" min="0" step="any" class="addbtntext' +
+            '"></td><td><input type="number" min="0" step="any" class="form-control" id="dis' +
             counter +
-            ' form-control" id="gstp' +
+            '" name="dis' +
             counter +
-            '" name="gstp' +
+            '"></td><td><input type="number" class="form-control" id="nr' +
             counter +
-            '"></td><td><input type="number" class="gstamt form-control" id="gstamt' +
-            counter +
-            '" name="gstamt' +
+            '" name="nr' +
             counter +
             '"readonly  ></td><td><input type="text" class="tot form-control" id="tot' +
             counter +
@@ -158,6 +191,7 @@ $(document).ready(function () {
             counter +
             '" readonly ></td>'
         );
+
         newRow.appendTo("#itemtable");
 
         $(".product-select").select2();
@@ -212,11 +246,53 @@ $(document).ready(function () {
       calculate(id);
     });
 
-    $(".addbtntext" + id).keyup(() => {
+    $("#dis" + id).keyup(() => {
       calculate(id);
     });
 
     $("#del" + id).click(() => {
+      // if ($("#row" + counter).attr("itemid") == 0) {
+      // } else {
+      //   var sum = 0;
+      //   $("tr")
+      //     .find(".tot")
+      //     .each(function () {
+      //       if (!isNaN(this.value) && this.value.length != 0) {
+      //         sum += parseFloat(this.value);
+      //       }
+      //     });
+      //   // gst calculate
+      //   if (customer_state == profile_state) {
+      //     var gstsum = 0;
+      //     $("tr")
+      //       .find(".gstamt")
+      //       .each(function () {
+      //         if (!isNaN(this.value) && this.value.length != 0) {
+      //           gstsum += parseFloat(this.value);
+      //         }
+      //       });
+      //     var cgst = gstsum / 2;
+      //     $("#cgst").val(cgst);
+      //     $("#sgst").val(cgst);
+      //   } else {
+      //     var gstsum = 0;
+      //     $("tr")
+      //       .find(".gstamt")
+      //       .each(function () {
+      //         if (!isNaN(this.value) && this.value.length != 0) {
+      //           gstsum += parseFloat(this.value);
+      //         }
+      //       });
+      //     $("#igst").val(gstsum);
+      //   }
+      //   $("#total").val(sum);
+      //   $("#row" + counter).remove();
+      //   var total = $("#total").val();
+      //   var roff = $("#roff").val();
+      //   var gt =
+      //     parseFloat(total) + parseFloat(gstsum) - parseFloat(roff ? roff : 0);
+      //   $("#gtot").val(gt);
+      // }
       if ($("#row" + counter).attr("itemid") == 0) {
       } else {
         var sum = 0;
@@ -227,36 +303,12 @@ $(document).ready(function () {
               sum += parseFloat(this.value);
             }
           });
-        // gst calculate
-        if (customer_state == profile_state) {
-          var gstsum = 0;
-          $("tr")
-            .find(".gstamt")
-            .each(function () {
-              if (!isNaN(this.value) && this.value.length != 0) {
-                gstsum += parseFloat(this.value);
-              }
-            });
-          var cgst = gstsum / 2;
-          $("#cgst").val(cgst);
-          $("#sgst").val(cgst);
-        } else {
-          var gstsum = 0;
-          $("tr")
-            .find(".gstamt")
-            .each(function () {
-              if (!isNaN(this.value) && this.value.length != 0) {
-                gstsum += parseFloat(this.value);
-              }
-            });
-          $("#igst").val(gstsum);
-        }
         $("#total").val(sum);
         $("#row" + counter).remove();
         var total = $("#total").val();
+        var oldamt = $("#oldamt").val();
         var roff = $("#roff").val();
-        var gt =
-          parseFloat(total) + parseFloat(gstsum) - parseFloat(roff ? roff : 0);
+        var gt = parseFloat(total) + parseFloat(oldamt) - parseFloat(roff);
         $("#gtot").val(gt);
       }
     });

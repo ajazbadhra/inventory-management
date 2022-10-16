@@ -11,7 +11,8 @@ const todayDate = () => {
   var dd = String(today.getDate()).padStart(2, "0");
   var mm = String(today.getMonth() + 1).padStart(2, "0");
   var yyyy = today.getFullYear();
-  today = yyyy + "/" + mm + "/" + dd;
+  // today = yyyy + "/" + mm + "/" + dd;
+  today = `${dd}/${mm}/${yyyy}`
   return today;
 };
 var count = 0;
@@ -60,13 +61,13 @@ const viewSale = async (req, res) => {
   }
 };
 
-const getState = async (req, res) => {
+const getOldAmt = async (req, res) => {
   try {
-    const customer_state = await Customer.findOne({
+    const oldAmt = await Customer.findOne({
       name: req.body.cname,
-    }).select("-_id state");
-    const profile_state = await User.find({}).select("state -_id");
-    res.json({ profile_state, customer_state });
+    }).select("-_id dueAmount");
+    // const profile_state = await User.find({}).select("state -_id");
+    res.json({ oldAmt });
   } catch (err) {
     console.log(err);
     res.send(err.message);
@@ -79,13 +80,12 @@ const addSale = async (req, res) => {
     const sp = [];
     for (i = 0; i < count; i++) {
       const p = {
-        hsn: req.body[`hsn${i}`],
         productName: req.body[`prod${i}`],
         unit: req.body[`unit${i}`],
         rate: req.body[`rate${i}`],
         qty: req.body[`qty${i}`],
-        gstp: req.body[`gstp${i}`],
-        gstAmt: req.body[`gstamt${i}`],
+        dis: req.body[`dis${i}`],
+        netRate: req.body[`nr${i}`],
         total: req.body[`tot${i}`],
       };
       const pr = {
@@ -99,7 +99,7 @@ const addSale = async (req, res) => {
         { $inc: { qty: -req.body[`qty${i}`] } }
       );
     }
-    const { billNo, date, customer, total, cgst, sgst, igst, roff, gtot } =
+    const { billNo, date, customer, total, oldAmt, roff, gtot } =
       req.body;
     await Sale.insertMany({
       billNo,
@@ -107,9 +107,7 @@ const addSale = async (req, res) => {
       customerName: customer,
       saleProducts: products,
       total,
-      cgst: cgst || 0,
-      sgst: sgst || 0,
-      igst: igst || 0,
+      oldAmt: oldAmt || 0,
       roff: roff || 0,
       gTotal: gtot,
     });
@@ -161,9 +159,7 @@ const invoice = async (req, res) => {
         customerName,
         saleProducts,
         total,
-        cgst,
-        sgst,
-        igst,
+        oldAmt,
         roff,
         gTotal,
       } = await Sale.findOne({ billNo: req.query.bill });
@@ -179,9 +175,7 @@ const invoice = async (req, res) => {
         customerName,
         saleProducts,
         total,
-        cgst,
-        sgst,
-        igst,
+        oldAmt,
         roff,
         gTotal,
         user,
@@ -196,9 +190,7 @@ const invoice = async (req, res) => {
         customerName,
         saleProducts,
         total,
-        cgst,
-        sgst,
-        igst,
+        oldAmt,
         roff,
         gTotal,
       } = await Sale.findOne().sort({ $natural: -1 });
@@ -214,9 +206,7 @@ const invoice = async (req, res) => {
         customerName,
         saleProducts,
         total,
-        cgst,
-        sgst,
-        igst,
+        oldAmt,
         roff,
         gTotal,
         user,
@@ -234,7 +224,7 @@ const invoice = async (req, res) => {
 module.exports = {
   showAddSale,
   viewSale,
-  getState,
+  getOldAmt,
   addSale,
   getCount,
   invoice,

@@ -12,7 +12,8 @@ const todayDate = () => {
   var min = String(today.getMinutes()).padStart(2, "0");
   var suffix = hh >= 12 ? " PM" : " AM";
   var time = hh + ":" + min + suffix;
-  today = yyyy + "/" + mm + "/" + dd;
+  // today = yyyy + "/" + mm + "/" + dd;
+  today = `${dd}/${mm}/${yyyy}`;
   return { date: today, time };
 };
 
