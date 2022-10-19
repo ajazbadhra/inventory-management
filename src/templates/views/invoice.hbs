@@ -171,19 +171,19 @@
                         <h2 class="text-center">Estimate</h2>
                     </div>
                 </div>
-                <div class="row mb-4">
+                <div class="row m-2">
                     <div class="col-sm-6 text-left">
-                        <h3 class="mb-1 text-dark mb-1">&nbsp;&nbsp;&nbsp;To : {{customer.name}}</h3>
-                        <div>&nbsp;&nbsp;&nbsp;Phone: {{customer.phone}}</div>
+                        <h3 class="mb-1 text-dark">To : {{customer.name}}</h3>
+                        <div>Phone: {{customer.phone}}</div>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <h3 class="text-dark mb-1">Bill No : {{billNo}}&nbsp;&nbsp;&nbsp;</h3>
-                        <div>Date : {{date}}&nbsp;&nbsp;&nbsp;</div>
+                        <h3 class="text-dark mb-1">Bill No : {{billNo}}</h3>
+                        <div>Date : {{date}}</div>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-sm" width=100%>
-                        <thead width=100%>
+                <div class="table-responsive m-2">
+                    <table width=100% >
+                        <thead border=1 width=100% class="table-bordered">
                             <tr>
                                 <th class="center">No</th>
                                 <th>Product Name</th>
@@ -211,7 +211,7 @@
                             </tr>
                             {{/each}}
                         </tbody>
-                        <tfoot >
+                        <tfoot class="table-bordered" >
                             <tr>
                             <th></th><th></th><th></th><th></th><th></th><th></th>
                                 <td class="left">
